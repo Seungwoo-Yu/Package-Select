@@ -1,0 +1,18 @@
+[package]
+name = "pkg_select_installer_linux"
+authors = ["Seungwoo Yu <seungwoyu2000@gmail.com>"]
+license = "Apache-2.0"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0.147", features = ["derive"] }
+serde_json = "1.0.89"
+colored = "2.0.0"
+pkg_select_shared = { path = "../../pkg_select_shared" }
+
+[target.'cfg(unix)'.dependencies]
+file-owner = "0.1.1"

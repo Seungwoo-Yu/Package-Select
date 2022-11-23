@@ -1,0 +1,10 @@
+[workspace]
+members = [
+    "pkg_select_cli",
+    "pkg_select_installer/linux",
+    "pkg_select_runner",
+    "pkg_select_shared",
+]
+
+[profile.release]
+strip = true # Strip symbols from binary for non-Windows distributions
