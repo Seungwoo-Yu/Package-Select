@@ -21,14 +21,14 @@ impl CLICommand for Purge {
     }
 
     fn main(&self, resolver: &ConfigResolver, config: &mut MutationLocker<RuntimeConfig>, args: &Argument) -> Result<(), Vec<CommandError>> {
-        let skip_confirm = args.optional_flag(format!("--skip-confirm"));
+        let skip_confirm = &args.optional_flag(format!("--skip-confirm"));
 
         if !skip_confirm {
             println!("{}", "Every package config data and registration is about to be erased. It can result in occurring unexpected errors.".bright_red());
             println!("Type \"Confirm\" to continue.");
 
-            let input = read_input().expect("couldn't get input from terminal.");
-            if !input.to_lowercase().eq("confirm") {
+            let input = read_input().expect("couldn't get input from terminal.").to_lowercase().replace("\n", "");
+            if !(&input).eq("confirm") {
                 println!("Purge aborted.");
                 return Ok(());
             }
