@@ -1,0 +1,19 @@
+[package]
+name = "pkg_select_shared"
+authors = ["Seungwoo Yu <seungwoyu2000@gmail.com>"]
+license = "Apache-2.0"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+directories = "4.0.1"
+serde = { version = "1.0.147", features = ["derive"] }
+serde_json = "1.0.89"
+colored = "2.0.0"
+sha2 = "0.10.5"
+base16ct = "0.1.1"
+indexmap = { version = "1.9.1", features = ["serde"] }
+serde_with = "2.0.1"

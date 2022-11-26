@@ -1,0 +1,33 @@
+[package]
+name = "pkg_select_cli"
+authors = ["Seungwoo Yu <seungwoyu2000@gmail.com>"]
+license = "Apache-2.0"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+directories = "4.0.1"
+serde = { version = "1.0.147", features = ["derive"] }
+serde_json = "1.0.89"
+colored = "2.0.0"
+pkg_select_shared = { path = "../pkg_select_shared" }
+indexmap = { version = "1.9.2", features = ["serde"] }
+struct_indexer_core = { git = "https://github.com/Seungwoo-Yu/Struct-Indexer-Rust", branch = "master" }
+struct_indexer_macro = { git = "https://github.com/Seungwoo-Yu/Struct-Indexer-Rust", branch = "master" }
+linux_alternative_resolver = { git = "https://github.com/Seungwoo-Yu/Linux-Alternative-Resolver", branch = "master", features = ["serde"] }
+linux_alternative_resolver_shared = { git = "https://github.com/Seungwoo-Yu/Linux-Alternative-Resolver", branch = "master", features = ["serde"] }
+linux_alternative_resolver_register = { git = "https://github.com/Seungwoo-Yu/Linux-Alternative-Resolver", branch = "master" }
+
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.43.0", features = [
+    "Win32_Foundation",
+    "Win32_Security",
+    "Win32_System_Threading",
+    "Win32_System_Registry",
+] }
+
+[target.'cfg(unix)'.dependencies]
+nix = "0.25.0"
