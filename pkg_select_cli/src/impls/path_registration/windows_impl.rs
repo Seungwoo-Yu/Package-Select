@@ -180,7 +180,24 @@ fn reset_registry() -> Result<(), DirectoryIOPathRegistrationError> {
         &data_var_string,
         None,
     )?;
-    remove_registry_set(registry_key, WINDOWS_PACKAGE_SELECT_PATH)?;
+    match remove_registry_set(registry_key, WINDOWS_PACKAGE_SELECT_PATH) {
+        Ok(_) => {}
+        Err(error) => {
+            match &error {
+                DirectoryIOPathRegistrationError::WindowsError(error2) => {
+                    match error2.code {
+                        ErrorCodes::ErrCodeRegNotFound => {}
+                        _ => {
+                            return Err(error);
+                        }
+                    }
+                },
+                _ => {
+                    return Err(error);
+                },
+            }
+        }
+    };
     invalidate_registry_key(&mut registry_key)
 }
 
