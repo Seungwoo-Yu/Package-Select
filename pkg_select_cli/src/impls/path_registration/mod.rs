@@ -160,3 +160,14 @@ pub fn unregister_raw_paths(
 
     path_registration_resolver.unregister(raw_paths)
 }
+
+pub fn reset_paths(
+    path_registration_resolver: &mut PathRegistrationResolver,
+) -> Result<(), DirectoryIOPathRegistrationError> {
+    #[cfg(not(target_os = "linux"))]
+    use crate::traits::path_registration::PathRegistrationReset;
+    #[cfg(target_os = "linux")]
+    use crate::traits::linux_path_registration::LinuxPathRegistrationReset;
+
+    path_registration_resolver.reset()
+}

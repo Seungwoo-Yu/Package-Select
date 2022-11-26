@@ -13,6 +13,7 @@ use pkg_select_shared::config_resolver::config_resolver::ConfigResolver;
 use pkg_select_shared::config_resolver::traits::config_persistence::ConfigPersistence;
 use crate::models::command_resolver::CommandResolver;
 use crate::models::commands::desync::Desync;
+use crate::models::commands::purge::Purge;
 use crate::models::commands::sync::Sync;
 use crate::models::commands::update_config::UpdateConfig;
 use crate::models::commands::validate::Validate;
@@ -100,5 +101,6 @@ fn resolve_commands(resolver: &mut CommandResolver) -> Result<(), CommandResolve
     resolver.resolve(CommandOrCollection::Command(Rc::new(Sync {})))?;
     resolver.resolve(CommandOrCollection::Command(Rc::new(Desync {})))?;
     resolver.resolve(CommandOrCollection::Command(Rc::new(Validate {})))?;
-    resolver.resolve(CommandOrCollection::Command(Rc::new(UpdateConfig {})))
+    resolver.resolve(CommandOrCollection::Command(Rc::new(UpdateConfig {})))?;
+    resolver.resolve(CommandOrCollection::Command(Rc::new(Purge {})))
 }
