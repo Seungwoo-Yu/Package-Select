@@ -115,7 +115,7 @@ jobs:
           path: pkg_select_installer/windows/Output/Package-Select-Installer-aarch64.exe
 
       - name: Upload installer to release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v1
         if: ${{startsWith(github.ref, 'refs/tags/') }}
         with:
           files: pkg_select_installer/windows/Output/Package-Select-Installer-aarch64.exe
