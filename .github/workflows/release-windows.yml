@@ -114,3 +114,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "Package-Select-Installer-x86.exe,Package-Select-Installer-x64.exe,Package-Select-Installer-aarch64.exe"
+          allowUpdates: true
+          draft: true
+          updateOnlyUnreleased: true
