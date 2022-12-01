@@ -85,8 +85,20 @@ impl CLICommand for Purge {
             }
         }
 
+        #[cfg(target_os = "linux")]
         match reset_paths(
-            &mut path_registration_resolver
+            &mut path_registration_resolver,
+            config.value(),
+        ) {
+            Ok(_) => {},
+            Err(error) => {
+                return Err(vec![CommandError::Others(Box::new(error))]);
+            }
+        };
+
+        #[cfg(not(target_os = "linux"))]
+        match reset_paths(
+            &mut path_registration_resolver,
         ) {
             Ok(_) => {},
             Err(error) => {
