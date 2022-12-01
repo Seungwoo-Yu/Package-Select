@@ -2,6 +2,8 @@ use std::path::PathBuf;
 use pkg_select_shared::common_models::models::configurations::target_binder::TargetBinder;
 use pkg_select_shared::common_models::traits::binder_converter::BinderConverter;
 use linux_alternative_resolver_shared::common_models::models::errors::error_combo::IOParseAlternativeResolveError;
+#[cfg(target_os = "linux")]
+use pkg_select_shared::common_models::models::runtime_config::RuntimeConfig;
 use crate::models::errors::path_registration_combo::DirectoryIOPathRegistrationError;
 use crate::models::path_registration_resolver::PathRegistrationResolver;
 
@@ -161,13 +163,23 @@ pub fn unregister_raw_paths(
     path_registration_resolver.unregister(raw_paths)
 }
 
+#[cfg(not(target_os = "linux"))]
 pub fn reset_paths(
     path_registration_resolver: &mut PathRegistrationResolver,
 ) -> Result<(), DirectoryIOPathRegistrationError> {
-    #[cfg(not(target_os = "linux"))]
     use crate::traits::path_registration::PathRegistrationReset;
-    #[cfg(target_os = "linux")]
-    use crate::traits::linux_path_registration::LinuxPathRegistrationReset;
+
+    RuntimeConfig;
 
     path_registration_resolver.reset()
+}
+
+#[cfg(target_os = "linux")]
+pub fn reset_paths(
+    path_registration_resolver: &mut PathRegistrationResolver,
+    config: &RuntimeConfig,
+) -> Result<(), DirectoryIOPathRegistrationError> {
+    use crate::traits::linux_path_registration::LinuxPathRegistrationReset;
+
+    path_registration_resolver.reset(config)
 }
