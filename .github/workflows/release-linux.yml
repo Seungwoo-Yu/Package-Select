@@ -132,3 +132,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "Package-Select-0.1.0-i386.deb,Package-Select-0.1.0-1.i386.rpm,Package-Select-0.1.0-amd64.deb,Package-Select-0.1.0-1.x86_64.rpm,Package-Select-0.1.0-arm64.deb,Package-Select-0.1.0-1.aarch64.rpm"
+          allowUpdates: true
+          draft: true
+          updateOnlyUnreleased: true
