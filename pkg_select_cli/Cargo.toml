@@ -30,4 +30,4 @@ windows = { version = "0.43.0", features = [
 ] }
 
 [target.'cfg(unix)'.dependencies]
-nix = "0.25.0"
+nix = "0.26.1"
