@@ -28,7 +28,8 @@ jobs:
       # pkg_select_installer_linux requires root privilege
       # i686 toolchain must be set properly
       - name: Build aarch64 release build and Create deb and rpm installers
-        run: sudo ./target/debug/pkg_select_installer_linux i686-unknown-linux-gnu -- CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=i686-linux-gnu-gcc \
+        run: sudo ./target/debug/pkg_select_installer_linux i686-unknown-linux-gnu -- LIBRARY_PATH=/usr/lib/x86_64-linux-gnu \
+          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=i686-linux-gnu-gcc \
           AR_aarch64_unknown_linux_gnu=i686-linux-gnu-ar \
           CC_aarch64_unknown_linux_gnu=i686-linux-gnu-gcc \
           CXX_aarch64_unknown_linux_gnu=i686-linux-gnu-g++
