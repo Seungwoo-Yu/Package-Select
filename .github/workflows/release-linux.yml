@@ -16,8 +16,8 @@ jobs:
       - name: Copy project sources
         uses: actions/checkout@v3
 
-      - name: Install rpm, gcc-i686-linux-gnu and g++-i686-linux-gnu
-        run: sudo apt-get install rpm gcc-i686-linux-gnu g++-i686-linux-gnu
+      - name: Install rpm, gcc-multilib and g++-multilib
+        run: sudo apt-get install rpm gcc-multilib g++-multilib
 
       - name: Install i686-unknown-linux-gnu
         run: rustup target add i686-unknown-linux-gnu
@@ -26,13 +26,8 @@ jobs:
         run: cargo build --verbose --package pkg_select_installer_linux --bin pkg_select_installer_linux
 
       # pkg_select_installer_linux requires root privilege
-      # i686 toolchain must be set properly
       - name: Build aarch64 release build and Create deb and rpm installers
-        run: sudo ./target/debug/pkg_select_installer_linux i686-unknown-linux-gnu -- LIBRARY_PATH=/usr/lib/i686-linux-gnu \
-          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=i686-linux-gnu-gcc \
-          AR_aarch64_unknown_linux_gnu=i686-linux-gnu-ar \
-          CC_aarch64_unknown_linux_gnu=i686-linux-gnu-gcc \
-          CXX_aarch64_unknown_linux_gnu=i686-linux-gnu-g++
+        run: sudo ./target/debug/pkg_select_installer_linux i686-unknown-linux-gnu
 
       - name: Upload deb installer
         uses: actions/upload-artifact@v3
