@@ -370,8 +370,6 @@ fn build_rpm(
         if description == "" { "N/A" } else { description.lines().nth(0).unwrap() },
     );
     (&mut raw_script).push(&summary_script);
-
-    let arch_script = format!("BuildArch: {}", (&build_target.arch).to_fedora_string());
     (&mut raw_script).push(&arch_script);
     (&mut raw_script).push("License: ASL 2.0");
     (&mut raw_script).push("");
