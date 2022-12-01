@@ -106,6 +106,7 @@ fn main() -> ExitCode {
 
         let mut command = _command.args(build_args)
             .envs([
+                ("CARGO_HOME", &cargo_path),
                 ("RUSTUP_HOME", &rustup_path)
             ])
             .current_dir(&project_path);
@@ -203,7 +204,7 @@ fn build_deb(
     build_target: &BuildTarget,
     debug_build: bool
 ) -> Result<(), Error> {
-    let build_code = format!("pkg_select-{}-{}", version, (&build_target.arch).to_debian_string());
+    let build_code = format!("Package-Select-{}-{}", version, (&build_target.arch).to_debian_string());
     let deb_temp_path = project_path.join("pkg_select_installer/linux/.deb-build");
     let root_path = (&deb_temp_path).join(&build_code);
     let destination_path = (&root_path).join("usr/lib/package-select");
@@ -244,7 +245,7 @@ fn build_deb(
         &debian_folder_path.join("control"),
         format!(
             "{}{}{}{}{}",
-            "Package: package-select\n",
+            "Package: Package-Select\n",
             format!("Version: {}\n", version),
             format!("Architecture: {}\n", (&build_target.arch).to_debian_string()),
             format!("Maintainer: {}\n", author),
@@ -261,7 +262,7 @@ fn build_deb(
         postinst_path,
         format!(
             "{}",
-            "ln -s /usr/lib/pkg_select/pkg_select_cli /usr/bin/pkg_select_cli\n",
+            "ln -s /usr/lib/package-select/pkg_select_cli /usr/bin/pkg_select_cli\n",
         )
     )?;
 
@@ -276,7 +277,7 @@ fn build_deb(
             "{}{}{}",
             "/usr/bin/pkg_select_cli purge --skip-confirm\n",
             "rm /usr/bin/pkg_select_cli\n",
-            "rm -rf /usr/lib/pkg_select/pkg_select_cli\n",
+            "rm -rf /usr/lib/package-select\n",
         )
     )?;
 
@@ -359,7 +360,7 @@ fn build_rpm(
     (&mut raw_script).push("");
 
     // Define build info
-    (&mut raw_script).push("Name: package-select");
+    (&mut raw_script).push("Name: Package-Select");
     let version_script = format!("Version: {}", version);
     (&mut raw_script).push(&version_script);
     (&mut raw_script).push("Release: 1");
@@ -388,8 +389,8 @@ fn build_rpm(
     // Write build script
     (&mut raw_script).push("%install");
     (&mut raw_script).push("rm -rf $RPM_BUILD_ROOT");
-    (&mut raw_script).push("mkdir -p $RPM_BUILD_ROOT/%{_libdir}/pkg-select");
-    (&mut raw_script).push("cp -r $RPM_BUILD_DIR/. $RPM_BUILD_ROOT/%{_libdir}/pkg-select");
+    (&mut raw_script).push("mkdir -p $RPM_BUILD_ROOT/%{_libdir}/package-select");
+    (&mut raw_script).push("cp -r $RPM_BUILD_DIR/. $RPM_BUILD_ROOT/%{_libdir}/package-select");
     (&mut raw_script).push("");
 
     // Write post build script
@@ -404,7 +405,7 @@ fn build_rpm(
 
     // Write post install script
     (&mut raw_script).push("%post");
-    (&mut raw_script).push("chmod 755 -R %{_libdir}/pkg-select");
+    (&mut raw_script).push("chmod 755 -R %{_libdir}/package-select");
     (&mut raw_script).push("ln -s %{_libdir}/jdk-selector/pkg_select_cli %{_bindir}/pkg_select_cli");
     (&mut raw_script).push("");
 
@@ -412,7 +413,7 @@ fn build_rpm(
     (&mut raw_script).push("%preun");
     (&mut raw_script).push("%{_bindir}/pkg_select_cli purge --skip-confirm");
     (&mut raw_script).push("rm %{_bindir}/pkg_select_cli");
-    (&mut raw_script).push("rm -rf %{_libdir}/pkg-select");
+    (&mut raw_script).push("rm -rf %{_libdir}/package-select");
     (&mut raw_script).push("");
 
     // Save raw script

@@ -1,0 +1,133 @@
+name: Release linux
+
+on:
+  push:
+    tags: ["*"]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # Tests are ignored due to runners provided by GitHub actions run on x64-based host machine only.
+  build-i686:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Copy project sources
+        uses: actions/checkout@v3
+
+      - name: Install rpm, gcc-i686-linux-gnu and g++-i686-linux-gnu
+        run: sudo apt-get install rpm gcc-i686-linux-gnu g++-i686-linux-gnu
+
+      - name: Install i686-unknown-linux-gnu
+        run: rustup target add i686-unknown-linux-gnu
+
+      - name: Build pkg_select_installer_linux
+        run: cargo build --verbose --package pkg_select_installer_linux --bin pkg_select_installer_linux
+
+      # pkg_select_installer_linux requires root privilege
+      # i686 toolchain must be set properly
+      - name: Build aarch64 release build and Create deb and rpm installers
+        run: sudo ./target/debug/pkg_select_installer_linux i686-unknown-linux-gnu -- CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=i686-linux-gnu-gcc \
+          AR_aarch64_unknown_linux_gnu=i686-linux-gnu-ar \
+          CC_aarch64_unknown_linux_gnu=i686-linux-gnu-gcc \
+          CXX_aarch64_unknown_linux_gnu=i686-linux-gnu-g++
+
+      - name: Upload deb installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: Package-Select-0.1.0-i386.deb
+          path: pkg_select_installer/linux/.deb-build/Package-Select-0.1.0-i386.deb
+
+      - name: Upload rpm installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: Package-Select-0.1.0-1.i386.rpm
+          path: pkg_select_installer/linux/.rpm-build/RPMS/i386/Package-Select-0.1.0-1.i386.rpm
+
+  build-x86_64:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Copy project sources
+        uses: actions/checkout@v3
+
+      - name: Install rpm
+        run: sudo apt-get install rpm
+
+      - name: Install x86_64-unknown-linux-gnu
+        run: rustup target add x86_64-unknown-linux-gnu
+
+      - name: Build x86_64 debug build
+        run: cargo build --verbose --target=x86_64-unknown-linux-gnu
+      - name: Run tests
+        run: cargo test --verbose --target=x86_64-unknown-linux-gnu
+
+      - name: Build pkg_select_installer_linux
+        run: cargo build --verbose --package pkg_select_installer_linux --bin pkg_select_installer_linux
+
+      # pkg_select_installer_linux requires root privilege
+      - name: Build x86_64 release build and Create deb and rpm installers
+        run: sudo ./target/debug/pkg_select_installer_linux x86_64-unknown-linux-gnu
+
+      - name: Upload deb installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: Package-Select-0.1.0-amd64.deb
+          path: pkg_select_installer/linux/.deb-build/Package-Select-0.1.0-amd64.deb
+
+      - name: Upload rpm installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: Package-Select-0.1.0-1.x86_64.rpm
+          path: pkg_select_installer/linux/.rpm-build/RPMS/x86_64/Package-Select-0.1.0-1.x86_64.rpm
+
+  # Tests are ignored due to runners provided by GitHub actions run on x64-based host machine only.
+  build-aarch64:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Copy project sources
+        uses: actions/checkout@v3
+
+      - name: Install rpm, gcc-aarch64-linux-gnu and g++-aarch64-linux-gnu
+        run: sudo apt-get install rpm gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
+      - name: Install aarch64-unknown-linux-gnu
+        run: rustup target add aarch64-unknown-linux-gnu
+
+      - name: Build pkg_select_installer_linux
+        run: cargo build --verbose --package pkg_select_installer_linux --bin pkg_select_installer_linux
+
+      # pkg_select_installer_linux requires root privilege
+      # Aarch64 toolchain must be set properly
+      - name: Build aarch64 release build and Create deb and rpm installers
+        run: sudo ./target/debug/pkg_select_installer_linux aarch64-unknown-linux-gnu -- CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc \
+          AR_aarch64_unknown_linux_gnu=aarch64-linux-gnu-ar \
+          CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc \
+          CXX_aarch64_unknown_linux_gnu=aarch64-linux-gnu-g++
+
+      - name: Upload deb installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: Package-Select-0.1.0-arm64.deb
+          path: pkg_select_installer/linux/.deb-build/Package-Select-0.1.0-arm64.deb
+
+      - name: Upload rpm installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: Package-Select-0.1.0-1.aarch64.rpm
+          path: pkg_select_installer/linux/.rpm-build/RPMS/aarch64/Package-Select-0.1.0-1.aarch64.rpm
+
+  release:
+    runs-on: ubuntu-22.04
+    needs: [build-i686, build-x86_64, build-aarch64]
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "Package-Select-0.1.0-i386.deb,Package-Select-0.1.0-1.i386.rpm,Package-Select-0.1.0-amd64.deb,Package-Select-0.1.0-1.x86_64.rpm,Package-Select-0.1.0-arm64.deb,Package-Select-0.1.0-1.aarch64.rpm"
