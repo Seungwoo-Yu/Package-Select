@@ -5,6 +5,12 @@
 #define MyAppVersion "0.1.0"
 #define MyAppPublisher "Seungwoo-Yu"
 #define MyAppURL "https://github.com/Seungwoo-Yu/Package-Select"
+#define DefaultSourceFolder "..\..\target\release"
+#define SourceFolder GetEnv("source-path")
+
+#if SourceFolder == ""
+#define SourceFolder DefaultSourceFolder
+#endif
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -36,8 +42,8 @@ OutputBaseFilename={#MyAppName}-Installer
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "..\..\target\release\pkg_select_cli.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\..\target\release\pkg_select_runner.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}\pkg_select_cli.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}\pkg_select_runner.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
