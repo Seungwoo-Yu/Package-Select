@@ -397,13 +397,13 @@ fn build_rpm(
 
     // Write created files
     (&mut raw_script).push("%files");
-    (&mut raw_script).push("%{_libdir}/pkg-select/*");
+    (&mut raw_script).push("%{_libdir}/package-select/*");
     (&mut raw_script).push("");
 
     // Write post install script
     (&mut raw_script).push("%post");
     (&mut raw_script).push("chmod 755 -R %{_libdir}/package-select");
-    (&mut raw_script).push("ln -s %{_libdir}/jdk-selector/pkg_select_cli %{_bindir}/pkg_select_cli");
+    (&mut raw_script).push("ln -s %{_libdir}/package-select/pkg_select_cli %{_bindir}/pkg_select_cli");
     (&mut raw_script).push("");
 
     // Write pre uninstall script
