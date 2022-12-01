@@ -169,8 +169,6 @@ pub fn reset_paths(
 ) -> Result<(), DirectoryIOPathRegistrationError> {
     use crate::traits::path_registration::PathRegistrationReset;
 
-    RuntimeConfig;
-
     path_registration_resolver.reset()
 }
 
