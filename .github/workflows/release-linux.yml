@@ -42,7 +42,7 @@ jobs:
           path: pkg_select_installer/linux/.rpm-build/RPMS/i386/Package-Select-0.1.0-1.i386.rpm
 
       - name: Upload installers to release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v1
         if: ${{startsWith(github.ref, 'refs/tags/') }}
         with:
           files: |
@@ -87,7 +87,7 @@ jobs:
           path: pkg_select_installer/linux/.rpm-build/RPMS/x86_64/Package-Select-0.1.0-1.x86_64.rpm
 
       - name: Upload installers to release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v1
         if: ${{startsWith(github.ref, 'refs/tags/') }}
         with:
           files: |
