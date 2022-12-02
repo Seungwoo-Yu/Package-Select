@@ -92,7 +92,7 @@ jobs:
         with:
           files: |
             pkg_select_installer/linux/.deb-build/Package-Select-0.1.0-amd64.deb
-            pkg_select_installer/linux/.rpm-build/RPMS/i386/Package-Select-0.1.0-1.x86_64.rpm
+            pkg_select_installer/linux/.rpm-build/RPMS/x86_64/Package-Select-0.1.0-1.x86_64.rpm
 
   # Tests are ignored due to runners provided by GitHub actions run on x64-based host machine only.
   build-aarch64:
@@ -137,4 +137,4 @@ jobs:
         with:
           files: |
             pkg_select_installer/linux/.deb-build/Package-Select-0.1.0-arm64.deb
-            pkg_select_installer/linux/.rpm-build/RPMS/i386/Package-Select-0.1.0-1.aarch64.rpm
+            pkg_select_installer/linux/.rpm-build/RPMS/aarch64/Package-Select-0.1.0-1.aarch64.rpm
