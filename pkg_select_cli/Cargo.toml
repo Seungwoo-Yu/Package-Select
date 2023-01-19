@@ -22,7 +22,7 @@ linux_alternative_resolver_shared = { git = "https://github.com/Seungwoo-Yu/Linu
 linux_alternative_resolver_register = { git = "https://github.com/Seungwoo-Yu/Linux-Alternative-Resolver", branch = "master" }
 
 [target.'cfg(windows)'.dependencies]
-windows = { version = "0.43.0", features = [
+windows = { version = "0.44.0", features = [
     "Win32_Foundation",
     "Win32_Security",
     "Win32_System_Threading",
