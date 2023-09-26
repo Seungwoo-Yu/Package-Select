@@ -13,7 +13,7 @@ directories = "4.0.1"
 serde = { version = "1.0.152", features = ["derive"] }
 serde_json = "1.0.91"
 colored = "2.0.0"
-sha2 = "0.10.6"
+sha2 = "0.10.8"
 base16ct = "0.1.1"
 indexmap = { version = "1.9.2", features = ["serde"] }
 serde_with = "2.2.0"
