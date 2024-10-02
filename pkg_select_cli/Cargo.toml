@@ -14,7 +14,7 @@ serde = { version = "1.0.152", features = ["derive"] }
 serde_json = "1.0.91"
 colored = "2.0.0"
 pkg_select_shared = { path = "../pkg_select_shared" }
-indexmap = { version = "1.9.2", features = ["serde"] }
+indexmap = { version = "2.6.0", features = ["serde"] }
 struct_indexer_core = { git = "https://github.com/Seungwoo-Yu/Struct-Indexer-Rust", branch = "master" }
 struct_indexer_macro = { git = "https://github.com/Seungwoo-Yu/Struct-Indexer-Rust", branch = "master" }
 linux_alternative_resolver = { git = "https://github.com/Seungwoo-Yu/Linux-Alternative-Resolver", branch = "master", features = ["serde"] }
