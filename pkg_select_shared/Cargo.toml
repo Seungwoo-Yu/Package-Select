@@ -16,4 +16,4 @@ colored = "2.0.0"
 sha2 = "0.10.6"
 base16ct = "0.1.1"
 indexmap = { version = "1.9.2", features = ["serde"] }
-serde_with = "2.2.0"
+serde_with = "3.11.0"
